@@ -1,0 +1,132 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node{
+    int data;
+    struct node * pnext;
+}node,* pnode;
+pnode link_create(void);
+void link_traverse(pnode);
+int link_length(pnode);
+void link_insert(pnode,int,int);
+void link_delete(pnode,int,int *);
+void link_sort(pnode);
+int main(int argc, const char * argv[]) {
+    pnode head=link_create();
+    int *val;
+    link_traverse(head);
+    printf("链表的长度%d\n",link_length(head));
+    //link_sort(head);
+    printf("排序后的链表");
+    link_traverse(head);
+    link_insert(head,-1,100);
+    link_traverse(head);
+    link_delete(head,0,&val );
+    printf("删除元素以后的元素");
+    link_traverse(head);
+};
+pnode link_create(){
+    pnode head=(pnode)malloc(sizeof(node));
+    if(NULL==head){
+        printf("开辟空间失败 链表创建失败");
+    }
+    else{
+    pnode tail=head;
+    tail->pnext=NULL;
+    int len;
+    printf("建立多少个节点的链表\n");
+    scanf("%d",&len);
+    int i=0;
+    for(i=0;i<len;i++){
+        int val;
+        printf("节点的值\n");
+        scanf("%d",&val);
+        pnode pnew=(pnode)malloc(sizeof(node));
+        if(NULL==pnew){
+            printf("开辟空间失败 链表创建失败");
+        }
+        else{
+        pnew->data=val;
+        tail->pnext=pnew;
+            tail=pnew;
+            
+        }
+    }
+        tail->pnext=NULL;
+    }
+    return head;
+}
+void link_traverse(pnode head){
+    pnode p=head->pnext;
+    while(NULL!=p){
+        printf("链表的值为%d\n",p->data);
+        p=p->pnext;
+    }
+    return;
+}
+int link_length(pnode head){
+    int i=0;
+    pnode p=head->pnext;
+    while(NULL!=p){
+        i++;
+        p=p->pnext;
+    }
+    return i;
+}
+void link_sort(pnode head){
+    pnode p,q;
+    int t;
+    int flag;
+    //p=head->pnext;
+    for(p=head->pnext;p!=NULL;p=p->pnext){
+        int flag=0;
+        for(q=p->pnext;q!=NULL;q=q->pnext){
+            if(p->data>q->data){
+                t=p->data;
+                p->data=q->data;
+                q->data=t;
+                flag=1;
+                
+            }
+        }
+        if(0==flag){
+            return;
+        }
+    }
+    return;
+}
+void link_insert(pnode head,int index,int val){
+    int i=0;
+    pnode p=head;
+    pnode q=(pnode)malloc(sizeof(node));
+    while(i<index && (NULL!=p)){
+        i++;
+        p=p->pnext;
+    }
+    if(i>index || (NULL==p)){
+        printf("插入位置不合法");
+    }
+    else{
+    q->data=val;
+    q->pnext=p->pnext;
+        p->pnext=q;}
+    return;
+}
+void link_delete(pnode head,int index,int *val){
+    int i=0;
+    pnode p=head;
+    pnode q;
+    while(i<index && (NULL!=p)){
+        i++;
+        p=p->pnext;
+    }
+    if(i>index || (NULL==p->pnext)){
+        printf("shanchu位置不合法");
+    }
+    else{
+        val=p->pnext->data;
+        q=p->pnext;
+        p->pnext=q->pnext;
+        free(q);
+    }
+    return;
+}
