@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct node{
+    int data;
+    struct node * pnext;
+}node,* pnode;
+typedef struct stack{
+    pnode top;
+    pnode bottom;
+}stack,*pstack;
+void init_stack(pstack);
+void push_stack(pstack,int);
+void traverse_stack(pstack);
+int  pop_stack(pstack,int*);
+void clear_stack(pstack);
+void destroy_stack(pstack);
+int main(void){
+    stack s;
+    int val;
+    init_stack(&s);
+    push_stack(&s, 1);
+    push_stack(&s, 32);
+    push_stack(&s, 33);
+    push_stack(&s, 66);
+    traverse_stack(&s);
+//    pop_stack(&s, &val);
+//    printf("开始删除元素啦");
+//    traverse_stack(&s);
+//    pop_stack(&s, &val);
+//    printf("开始删除元素啦");
+//    traverse_stack(&s);
+//    pop_stack(&s, &val);
+//    printf("开始删除元素啦");
+//    traverse_stack(&s);
+//    pop_stack(&s, &val);
+//    printf("开始删除元素啦");
+//    traverse_stack(&s);
+//    pop_stack(&s, &val);
+//    printf("开始删除元素啦");
+//    traverse_stack(&s);
+//    pop_stack(&s, &val);
+//    printf("开始删除元素啦");
+//    traverse_stack(&s);
+    clear_stack(&s);
+    traverse_stack(&s);
+    destroy_stack(&s);
+}
+void init_stack(pstack ps){
+    pnode p=(pnode)malloc(sizeof(node));
+    p->pnext=NULL;
+    ps->top=p;
+    ps->bottom=p;
+    return;
+}
+void push_stack(pstack ps,int val){
+    pnode p=(pnode)malloc(sizeof(node));
+    p->data=val;
+    p->pnext=ps->top;
+    ps->top=p;
+    return;
+}
+int  pop_stack(pstack ps,int* val){
+    if(ps->top==ps->bottom){
+        printf("栈为空，无元素可以消失");
+        return 0;
+    }
+    else{
+    pnode p=ps->top;
+    *val=p->data;
+    ps->top=p->pnext;
+    free(p);
+    p=NULL;
+    return 1;
+        
+    }
+}
+void traverse_stack(pstack ps){
+    if(ps->top==ps->bottom){
+        printf("栈为空，无元素可以遍历");
+    }
+    else{
+        pnode p=ps->top;
+        while(p!=ps->bottom){
+            printf("%d\n",p->data);
+            p=p->pnext;
+        }
+    
+}
+    return;
+}
+void clear_stack(pstack ps){
+    if(ps->top==ps->bottom){
+        printf("栈为空，无元素可以清除");
+    }
+    else{
+        //pnode p=ps->top;
+        pnode q=NULL;
+        while(ps->top!=ps->bottom){
+            q=ps->top->pnext;
+            free(ps->top);
+            ps->top=q;
+}
+
+}
+    return;
+}
+void destroy_stack(pstack ps){
+    if(ps->top==ps->bottom){
+        printf("栈为空，无元素可以清除");
+    }
+    else{
+        //pnode p=ps->top;
+        pnode q=NULL;
+        while(ps->top!=ps->bottom){
+            q=ps->top->pnext;
+            free(ps->top);
+            ps->top=q;
+        }
+        
+    }
+        free(ps->top);
+        //free(ps->bottom);
+        ps->top=NULL;
+        ps->bottom=NULL;
+    return;
+}
