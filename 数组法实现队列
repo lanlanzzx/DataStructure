@@ -1,0 +1,101 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct queue{
+    int *p;
+    int length;
+    int front;
+    int rear;
+}queue,*pqueue;
+void init_queue(pqueue,int);
+void push_queue(pqueue,int);
+int full_queue(pqueue);
+int empty_queue(pqueue);
+void pop_queue(pqueue);
+void traverse_queue(pqueue);
+void clear_queue(pqueue);
+void destory_queue(pqueue);
+int main(){
+    queue pq;
+    init_queue(&pq, 3);
+    push_queue(&pq, 2);
+    push_queue(&pq, 1);
+    pop_queue(&pq);
+    traverse_queue(&pq);
+    push_queue(&pq, 5);
+    traverse_queue(&pq);
+    clear_queue(&pq);
+    traverse_queue(&pq);
+    destory_queue(&pq);
+
+
+    return 0;
+}
+void init_queue(pqueue pq,int len){
+    pq->length=len;
+    pq->p=(int *)malloc((pq->length)*sizeof(int));
+    pq->front=0;
+    pq->rear=0;
+    return;
+}
+int full_queue(pqueue pq){
+    if((pq->rear+1)%(pq->length)==pq->front){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+int empty_queue(pqueue pq){
+    if(pq->rear==pq->front)
+        return 1;
+    else
+        return 0;
+}
+void push_queue(pqueue pq,int val){
+    if(1==full_queue(pq)){
+        printf("队列已经满了，无法添加元素\n");
+    }
+    else{
+        (pq->p)[pq->rear]=val;
+        pq->rear=(pq->rear+1)%(pq->length);
+    }
+    return;
+}
+void pop_queue(pqueue pq){
+    if(1==empty_queue(pq)){
+        printf("队列空，无法删除元素\n");
+    }
+    else{
+        printf("删除的元素是%d\n",(pq->p)[pq->front]);
+        pq->front=(pq->front+1)%(pq->length);
+    }
+    return;
+}
+void traverse_queue(pqueue pq){
+    if(1==empty_queue(pq)){
+        printf("队列空，无元素可以遍历\n");
+    }
+    else{
+        int i=pq->front;
+        while(i!=pq->rear){
+            printf("队列元素是%d\n",(pq->p)[i]);
+            i=(i+1)%(pq->length);
+        }
+    }
+    return;
+}
+void clear_queue(pqueue pq){
+    if(1==empty_queue(pq)){
+        printf("队列空，无元素可以清除\n");
+    }
+    else{
+        pq->front=pq->rear;
+    }
+    return;
+}
+void destory_queue(pqueue pq){
+    clear_queue(pq);
+    free(pq->p);
+    pq->p=NULL;
+    return;
+}
