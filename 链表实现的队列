@@ -1,0 +1,93 @@
+//队列的链式存储
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node{
+    int data;
+    struct node * pnext;
+}node,*pnode;
+typedef struct queue{
+    pnode front;
+    pnode rear;
+}queue,*pqueue;
+void init_queue(pqueue);
+void pop_queue(pqueue);
+void push_queue(pqueue,int);
+void traverse_queue(pqueue);
+void clear_queue(pqueue);
+void destory_queue(pqueue);
+int main(){
+    queue pq;
+    init_queue(&pq);
+    push_queue(&pq, 1);
+    push_queue(&pq, 2);
+    push_queue(&pq, 3);
+    traverse_queue(&pq);
+    pop_queue(&pq);
+    traverse_queue(&pq);
+    clear_queue(&pq);
+    traverse_queue(&pq);
+    destory_queue(&pq);
+    return 0;
+}
+void init_queue(pqueue pq){
+    pnode p=(pnode)malloc(sizeof(node));
+    pq->front=pq->rear=p;
+    p->pnext=NULL;
+    return;
+}
+void push_queue(pqueue pq,int val){
+    pnode p=(pnode)malloc(sizeof(node));
+    pq->rear->data=val;
+    pq->rear->pnext=p;
+    pq->rear=p;
+    p->pnext=NULL;
+    return;
+    
+}
+void traverse_queue(pqueue pq){
+    if(pq->rear==pq->front){
+        printf("队列元素为空，无元素可遍历");
+    }
+    else{
+    pnode p=pq->front;
+    while(p!=pq->rear){
+        printf("队列中的元素为%d\n",p->data);
+        p=p->pnext;
+    }
+    }
+    return;
+}
+void pop_queue(pqueue pq){
+    if(pq->rear==pq->front){
+        printf("队列为空，无元素可出队列");
+    }
+    else{
+        printf("出队元素%d\n",pq->front->data);
+        pnode p=pq->front;
+        pq->front=pq->front->pnext;
+        free(p);
+    }
+    return;
+}
+void clear_queue(pqueue pq){
+    if(pq->rear==pq->front){
+        printf("队列为空，无元素可清除");
+    }
+    else{
+        pnode p=pq->front;
+        while(p!=pq->rear){
+            pq->front=pq->front->pnext;
+            free(p);
+            p=pq->front;
+        }
+        
+    }
+    return;
+}
+void destory_queue(pqueue pq){
+    clear_queue(pq);
+    free(pq->front);
+    pq->front=NULL;
+    pq->rear=NULL;
+    return;
+}
